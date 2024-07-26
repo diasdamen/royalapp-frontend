@@ -5,6 +5,8 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: 'royalapp-backend.onrender.com',
+        port: "",
+        pathname: '/**',
       },
     ],
   },
