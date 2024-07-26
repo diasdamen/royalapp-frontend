@@ -3,7 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: '127.0.0.1',
+        protocol: "https",
+        hostname: 'royalapp-backend.onrender.com',
       },
     ],
   },
