@@ -7,7 +7,9 @@ const axiosClient=axios.create({
 });
 
 const getRoom= () =>axiosClient.get('/rooms?populate=*');
+const getUserReservations = (userEmail: string) => axiosClient.get(`/reservations?[filters][email][$eq]=${userEmail}&populate=*`);
 
 export default{
-    getRoom
+    getRoom,
+    getUserReservations
 };
