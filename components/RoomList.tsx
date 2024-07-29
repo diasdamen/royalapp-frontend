@@ -3,21 +3,41 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaStar, FaStarHalf } from 'react-icons/fa';
-
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+interface Room {
+  id: number;
+  attributes: {
+    type: string;
+    title: string;
+    capacity: number;
+    price: number;
+    image: {
+      data: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+  };
+}
 
-const RoomList = ({ rooms } : { rooms: any }) => {
+interface RoomListProps {
+  rooms: {
+    data: Room[];
+  };
+}
 
+const RoomList: React.FC<RoomListProps> = ({ rooms }) => {
   const [roomType, setRoomType] = useState('all');
-  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [filteredRooms, setFilteredRooms] = useState<Room[]>([]);
 
-  useEffect(()=> {
-    const filtered = rooms.data?.filter((room: any)=> {
-      return roomType === 'all' ? rooms : roomType === room.attributes.type;
+  useEffect(() => {
+    const filtered = rooms.data?.filter((room) => {
+      return roomType === 'all' ? rooms : room.attributes.type === roomType;
     });
     setFilteredRooms(filtered);
-  }, [roomType]);
+  }, [roomType, rooms]);
 
   return (
     <section className='py-16 min-h-[90vh]'>
@@ -39,28 +59,28 @@ const RoomList = ({ rooms } : { rooms: any }) => {
           <TabsTrigger 
             className='w-full h-full' 
             value='all' 
-            onClick={()=> setRoomType('all')}
+            onClick={() => setRoomType('all')}
           >
             All
           </TabsTrigger>
           <TabsTrigger 
             className='w-full h-full' 
             value='single' 
-            onClick={()=> setRoomType('single')}
+            onClick={() => setRoomType('single')}
           >
             Single
           </TabsTrigger>
           <TabsTrigger 
             className='w-full h-full' 
             value='double' 
-            onClick={()=> setRoomType('double')}
+            onClick={() => setRoomType('double')}
           >
             Double
           </TabsTrigger>
           <TabsTrigger 
             className='w-full h-full' 
             value='extended' 
-            onClick={()=> setRoomType('extended')}
+            onClick={() => setRoomType('extended')}
           >
             Extended
           </TabsTrigger>
@@ -69,7 +89,7 @@ const RoomList = ({ rooms } : { rooms: any }) => {
 
       {/* room list */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-        {filteredRooms.map((room: any) => {
+        {filteredRooms.map((room) => {
           const imgURL = `https://royalapp-backend.onrender.com${room.attributes.image.data?.attributes.url}`;
           console.log(imgURL);
           return (
@@ -110,7 +130,5 @@ const RoomList = ({ rooms } : { rooms: any }) => {
     </section>
   );
 };
-
-
 
 export default RoomList;
